@@ -4,8 +4,11 @@ const http = require('http');
 
     const server = http.createServer();
 
-    server.on('connection', (Socket) => {
-        console.log("trigged");
+    server.on('connection', (req,res) => {
+       if (req.url === "/") {
+            res.write("Hello world");
+            res.end();
+        }
     })
 
     server.listen(3000);
