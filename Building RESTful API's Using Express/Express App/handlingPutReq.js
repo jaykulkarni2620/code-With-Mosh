@@ -26,15 +26,14 @@ app.get('/api/courses', (req,res) => {
 
     //Look up the course , If not existing , return 400
     const course = courses.find(c => c.id === parseInt(req.params.id));
-    if (!course)res.status(400).send("The Course With Given Id does not found");
+    if (!course) return res.status(400).send("The Course With Given Id does not found");
    
     
     const { error } = validateCourse(req.body);
     //validate , if invalid , return 400 - Bad Request
     console.log(result);
-    if (error) {
-       res.status(400).send(error.details[0].message);
-    }
+    if (error) return res.status(400).send(error.details[0].message);
+    
 
     //update course, return updated course"
         course.name = req.body.name;
