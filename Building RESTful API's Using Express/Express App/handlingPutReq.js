@@ -21,8 +21,8 @@ const courses = [
 app.get('/api/courses', (req,res) => {
     res.send(courses);
 });
-
-  app.put('api/courses/:id', (req,res) => {
+  
+app.put('api/courses/:id', (req,res) => {
 
     //Look up the course , If not existing , return 400
     const course = courses.find(c => c.id === parseInt(req.params.id));
