@@ -7,8 +7,12 @@ console.log('Before');
 //   })
 // });
 
-    const p = getUser(1);
-    p.then(user => console.log(user));
+//Promise-based approach
+  getUser(1)
+     .then(user => getRepositories(user.gitHubUsername))
+     .then(userRepo => getCommits(userRepo[0]))
+     .then(commits => console.log("commits",commits))
+     .catch(error => console.log("ERROR:",error));
 
 
 console.log('After');
