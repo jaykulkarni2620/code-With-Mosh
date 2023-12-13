@@ -109,7 +109,12 @@ getCourses();
 //-------------------------Regular Expression
 
 async function getCourses(){
+      //for pagination 
+      const pageNumber = 2;
+      const pageSize =10;
+    
     const courses = await Course
+
 //    .find({ author:"jay", isPublished:true })
    
     // Only get course which author "Jay" not get Jaykul or Jayshsjk
@@ -130,7 +135,11 @@ async function getCourses(){
     
     // select 
     .select({ name: 1, tags: 1 })
+   
     
+    //pagination 
+    .skip((pagenumber -1) * pageSize)
+    .limit(pageSize)
     //count how many course there 
     .count()
     console.log(courses);
