@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 
+=======
+const { AsyncLocalStorage } = require('async_hooks');
+>>>>>>> be38faec4a3e304028a1a8671f995bbce1cea060
 const mongoose = require('mongoose');
 
 mongoose.connect('mongodb://localhost:27017/playground')
@@ -44,9 +48,13 @@ createCourse()
 //with filter 
 
 async function getCourses(){
+<<<<<<< HEAD
     const courses = await Course
     // .find({ author:"jay", isPublished:true })
 
+=======
+    const courses = Course.find({ author:"jay", isPublished:true })
+>>>>>>> be38faec4a3e304028a1a8671f995bbce1cea060
     // limits 
     .limit(10)
     //sort ascending order(1) and decending order(-1)
@@ -56,6 +64,7 @@ async function getCourses(){
     console.log(courses);
  };
 
+<<<<<<< HEAD
 getCourses();
 
 //---------------------------------commparison query ------------------------
@@ -145,4 +154,6 @@ async function getCourses(){
     console.log(courses);
  };
 
+=======
+>>>>>>> be38faec4a3e304028a1a8671f995bbce1cea060
 getCourses();
