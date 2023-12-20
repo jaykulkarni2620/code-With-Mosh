@@ -42,6 +42,28 @@ app.get('/users', async (req, res) => {
     }
 });
 
+//read particular user
+app.get('/users/:id', async (req,res) => {
+    try{
+        const user = await User.findById(req.params.id);
+        res.json(user);
+        console.log("reqParams",req.params.id);
+    }catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Update a user by ID
+app.put('/user/:id', async (req, res) => {
+    try{
+        const { name, lname} = req.body;
+        const updateUser = await User.findByIdAndUpdate(req.params.id,  { name, lname},  { new: true });
+        res.send(updateUser);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
