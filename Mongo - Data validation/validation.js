@@ -22,9 +22,21 @@ const courseSchema = new mongoose.Schema({
     //Custom validation
     tags: {
         type: Array,
+        // validate: {
+        //     validator: function(v) {
+        //         return v.length > 0;
+        //     },
+        //     message: "A course at least one tags."
+        // }
+
+        // Async Validators
+        isAsync: true,
         validate: {
-            validator: function(v) {
-                return v.length > 0;
+            validator: function(v, callback) {
+                setTimeout(() => {
+                const result =  v && v.length > 0;
+                callback(result);
+                },4000);
             },
             message: "A course at least one tags."
         }
