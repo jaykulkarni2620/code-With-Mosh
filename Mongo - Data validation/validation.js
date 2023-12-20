@@ -17,35 +17,44 @@ const courseSchema = new mongoose.Schema({
         //Built in validators
         enum: ['web','mobile','network'],
         require: true,
+        //Schema type option
+        // lowercase: true,
+        // uppercase: true,
+        // trim: true,
     },
     author: String,
     //Custom validation
     tags: {
         type: Array,
-        // validate: {
-        //     validator: function(v) {
-        //         return v.length > 0;
-        //     },
-        //     message: "A course at least one tags."
-        // }
+        validate: {
+            validator: function(v) {
+                return v.length > 0;
+            },
+            message: "A course at least one tags."
+        },
 
         // Async Validators
         isAsync: true,
-        validate: {
-            validator: function(v, callback) {
-                setTimeout(() => {
-                const result =  v && v.length > 0;
-                callback(result);
-                },4000);
-            },
-            message: "A course at least one tags."
-        }
+        // validate: {
+        //     validator: function(v, callback) {
+        //         setTimeout(() => {
+        //         const result =  v && v.length > 0;
+        //         callback(result);
+        //         },4000);
+        //     },
+        //     message: "A course at least one tags."
+        // }
     },
     date: {type: Date, default: Date.now},
     isPublished: Boolean,
     price: {
         type: Number, 
-        require: function() { return this.isPublished}
+        require: function() { return this.isPublished;},
+        min:10,
+        max:50,
+        //Schema type option
+        get: v => Math.round(v),
+        set: v => Math.round(v),
     }
 });
 
@@ -57,10 +66,10 @@ async function createCourse() {
     const course = new Course({
         name: "Angular-js",
         author: "jay",
-        tags: [],
+        tags: ['frontend'],
         isPublished:true,
-        category: 'web'
-        //price: 15
+        category: 'web',
+        price: 15.8,
     });
 
         try{
