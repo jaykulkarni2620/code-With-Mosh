@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const app = express();
 const port = 3030;
 
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }))
 
 mongoose.connect('mongodb://localhost:27017/user', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log("Connected to MongoDB"))
@@ -23,6 +23,8 @@ app.post('/users', async (req, res) => {
     try {
         const { name, lname } = req.body;
         const newUser = new User({ name, lname });
+        console.log("name", name);
+        console.log("lname", lname);
         const result = await newUser.save();
         res.json(result);
     } catch (error) {
