@@ -8,11 +8,22 @@ const courseSchema = new mongoose.Schema({
     name: {
         type:String,
         required: true,
+        minlength: 5,
+        maxlength: 255,
+    },
+    category: {
+        type:String,
+        enum: ['web','mobile','network'],
+        require: true,
     },
     author: String,
     tags: [String],
     date: {type: Date, default: Date.now},
     isPublished: Boolean,
+    price: {
+        type: Number, 
+        require: function() { return this.isPublished}
+    }
 });
 
 //model
@@ -21,16 +32,21 @@ const Course = mongoose.model('Course',courseSchema);
 async function createCourse() {
 
     const course = new Course({
-        // name: "Angular-js",
+        name: "Angular-js",
         author: "jay",
         tags: ["Angular-js","frontend"],
         isPublished:true,
+        category: '-'
+        //price: 15
     });
 
-    const result = await course.save();
-    console.log("result",result);
-
-}
+        try{
+            const result = await course.save();
+            console.log("result",result);
+        } catch (error) {
+            console.log("Error:", error );
+        };
+};
 createCourse();
 
 // async function updatingData(id){
