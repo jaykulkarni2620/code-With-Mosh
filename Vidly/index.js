@@ -1,3 +1,4 @@
+require('express-async-errors');
 const config = require('config');
 const error = require('./middleware/error');
 const Joi = require('joi');
@@ -14,8 +15,7 @@ const app = express();
 
 console.log('Loaded configuration:', config.util.getConfigSources());
 
-if (!config.get('jwtprivatekey')) {
-
+if (!config.get('jwtPrivateKey')) {
   console.error('FATAL ERROR: jwtPrivateKey is not defined.');
   process.exit(1);
 }
