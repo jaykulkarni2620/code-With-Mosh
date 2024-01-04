@@ -14,10 +14,36 @@ const auth = require('./routes/auth');
 const express = require('express');
 const app = express();
 
+//for uncaughtException
+process.on('uncaughtException', (ex) => {
+  console.log('We got an unhandled rejection');
+  winston.error(ex.message, ex);
+  process.exit(1);
+})
+
+//for handlException
+winston.handleException(
+  new winston.transports.File ({ filename: 'uncaughtException.log'}),
+
+  process.on('uncaughtRejection', (ex) => {
+    throw ex;
+  })
+)
+
+
 //using winston 
 // using winston
 winston.add(new winston.transports.File({ filename: 'logfile.log' }));
-  
+// for mongodb
+// winston.add(winston.transports.MongoDB, ({
+//   db: 'mongodb://localhost/vidly',
+//   level:'info'
+// }));
+
+
+const p = Promise.reject(new Error('something failed miserably!'));
+p.then(() => console.log('Done'));
+
 
 console.log('Loaded configuration:', config.util.getConfigSources());
 
