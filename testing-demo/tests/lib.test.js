@@ -29,3 +29,11 @@ describe('greet', () => {
     });
 });
 
+describe('getCurrencies', () => {
+    it('should return the greeting message', () => {
+        const result = lib.getCurrencies();
+       // Ideal way 
+       expect(result).toEqual(expect.arrayContaining(['USD', 'AUD', 'EUR']));
+    });
+});
+
