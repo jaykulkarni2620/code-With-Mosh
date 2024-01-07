@@ -37,3 +37,17 @@ describe('getCurrencies', () => {
     });
 });
 
+describe('getProduct', () => {
+    it('should return the product of the given id ', () => {
+        const result = lib.getProduct(1);
+        // these two object in different location in memory 
+        // expect(result).toBe({ id:1, price:10})
+        //now using toEqual but when try to add something new property its not pass the test
+        // expect(result).toEqual({ id:1, price:10})
+        // using toMatchObject for objest
+        //expect(result).toMatchObject({ id:1, price:10});
+        //first property is required ... hyapudhe konti he property asli does not matter.
+        expect(result).toHaveProperty('id', 1);
+    });
+});
+
