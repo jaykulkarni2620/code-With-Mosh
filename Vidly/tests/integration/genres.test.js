@@ -60,7 +60,7 @@ describe('/api/genres', () => {
 
             //     const token = new User().generateAtuhToken();
 
-            //    const res = await (await request(sever)
+            //    const res = await request(sever)
             //    .post('/api/genres'))
             //    .send({ name: 'genre1'});
             //     except(res.status).toBe(401);
@@ -86,6 +86,34 @@ describe('/api/genres', () => {
  
  
                  except(res.status).toBe(400);
+             })
+
+
+            // Testing Happy path 
+
+            it('should save the genres if it is valid', async() => {
+                const token = new User().generateAtuhToken();
+
+               const res = await request(sever)
+               .post('/api/genres')
+               .send({ name: 'genre1'});
+
+               const genre = Genre.find({ name: 'genre1'});
+
+                except(res).not.toBeNull(401);
+             })
+
+             //make sure that this genres is in the body of the response 
+             it('should return the genres if it is valid', async() => {
+                const token = new User().generateAtuhToken();
+
+               const res = await request(sever)
+               .post('/api/genres')
+               .send({ name: 'genre1'});
+
+              
+                except(res.body).toHaveProperty('_id');
+                except(res.body).toHaveProperty('name', 'genre1');
              })
         })
 })
