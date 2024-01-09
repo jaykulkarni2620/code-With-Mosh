@@ -1,5 +1,7 @@
 const request = require('supertest');
 const { Genre } = require('../../models/genre');
+const { User } = require('../../models/user');
+const { describe } = require('joi/lib/types/lazy');
 
 let server;
 
@@ -31,7 +33,7 @@ describe('/api/genres', () => {
 //     })
 //  })
 
-describe('GET/:id', () => { 
+       describe('GET/:id', () => { 
     console.log('Server console', server);
     it('should return a genre if valid id is passed', async () => {
         const genre = new Genre({ name: 'genre1'});
@@ -52,5 +54,13 @@ describe('GET/:id', () => {
 
         expect(res.status).toBe(404);
      })
-})
+    })
+
+    //POST API
+        describe('POST/', () => {
+            it('should return 401 if client is not looged in', async() => {
+               const res = await request(sever).post('/api/genres').send({ name: 'genre1'});
+                except(res.status).toBe(401);
+            })
+        })
 })
