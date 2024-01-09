@@ -54,36 +54,51 @@ describe('/api/genres', () => {
     //  })
     // })
 
+   
+
     //POST API
         describe('POST/', () => {
-            // it('should return 401 if client is not looged in', async() => {
 
-            //     const token = new User().generateAtuhToken();
+        let token;
+        let name;
 
-            //    const res = await request(sever)
-            //    .post('/api/genres'))
-            //    .send({ name: 'genre1'});
-            //     except(res.status).toBe(401);
-            // })
+            const exec = async () => {
+                return await request(server)
+                .post('/api/genres')
+                .set('X-auth-token', token)
+                .send({ name: name});
+            }
+
+            beforeEach( () => {
+                token = new User().generateAtuhToken();
+                name = 'genre1'
+            })
+
+
+            it('should return 401 if client is not looged in', async() => {
+                token ="";
+
+                const res = await exec();
+
+                except(res.status).toBe(401);
+            })
 
             it('should return 400 if genre is less than 5 characters', async() => {
-               const res =  await request(server)
-               .post('/api/genres')
-               .set('X-auth-token', token)
-               .send({ name: '1234'});
+                
+                name= '1234';
 
+                const res = await exec();
 
                 except(res.status).toBe(400);
             })
 
 
-            const name = new Array(52).join('a');
+           
             it('should return 400 if genre is more than 50 characters', async() => {
-                const res =  await request(server)
-                .post('/api/genres')
-                .set('X-auth-token', token)
-                .send({ name: name});
- 
+
+                name = new Array(52).join('a');
+                
+                const res = await exec();
  
                  except(res.status).toBe(400);
              })
@@ -92,25 +107,18 @@ describe('/api/genres', () => {
             // Testing Happy path 
 
             it('should save the genres if it is valid', async() => {
-                const token = new User().generateAtuhToken();
 
-               const res = await request(sever)
-               .post('/api/genres')
-               .send({ name: 'genre1'});
+               await exec();
 
                const genre = Genre.find({ name: 'genre1'});
 
-                except(res).not.toBeNull(401);
+                except(genre).not.toBeNull(401);
              })
 
              //make sure that this genres is in the body of the response 
              it('should return the genres if it is valid', async() => {
-                const token = new User().generateAtuhToken();
-
-               const res = await request(sever)
-               .post('/api/genres')
-               .send({ name: 'genre1'});
-
+                
+                const res = await exec();
               
                 except(res.body).toHaveProperty('_id');
                 except(res.body).toHaveProperty('name', 'genre1');
