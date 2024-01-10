@@ -1,11 +1,13 @@
 const request = require('supertest');
 const { Genre } = require('../../models/genre');
 const { User } = require('../../models/user');
-const { describe } = require('joi/lib/types/lazy');
+const mongoose = require('mongoose');
+
+
 
 let server;
 
-describe('/api/genres', () => {
+describe('api/genres/', () => {
     // pratyek endpoint chya adhi server start honar
     beforeEach(async () => {
         server = await require('../../index');
@@ -31,28 +33,37 @@ describe('/api/genres', () => {
 //     })
 //  })
 
-    //    describe('GET/:id', () => { 
-    // console.log('Server console', server);
-    // it('should return a genre if valid id is passed', async () => {
-    //     const genre = new Genre({ name: 'genre1'});
-    //     await genre.save();
+    describe('GET/:id', () => { 
 
-    //     const res = await request(server).get('http://127.0.0.1:3000/api/genres/' + genre._id);
+        it('should return a genre if valid id is passed', async () => {
+        const genre = new Genre({ name: 'genre1'});
+        await genre.save();
 
-    //     expect(res.status).toBe(200);
-    //     // expect(res.body).toMatchObject(genre);
+        const res = await request(server).get('/api/genres/' + genre.id);
+
+        expect(res.status).toBe(200);
+        // expect(res.body).toMatchObject(genre);
        
-    //     // return to buffer so using this toHaveproperty()
-    //     except(res.body).toHaveProperty('name', genre.name);
-    //  })
+        // return to buffer so using this toHaveproperty()
+        expect(res.body).toHaveProperty('name', genre.name);
+     })
 
-    //  it('should return a 404 if invalid id', async () => {
+     it('should return a 404 if invalid id', async () => {
 
-    //     const res = await request(server).get('api/genres/1');
+        const res = await request(server).get('api/genres/1');
 
-    //     expect(res.status).toBe(404);
-    //  })
-    // })
+        expect(res.status).toBe(404);
+     })
+
+     it('should return a 404 if no genre with the given id exist', async () => {
+
+        const id = mongoose.Types.ObjectId();
+
+        const res = await request(server).get('api/genres/', + id);
+
+        expect(res.status).toBe(404);
+     })
+    })
 
    
 
@@ -70,7 +81,7 @@ describe('/api/genres', () => {
             }
 
             beforeEach( () => {
-                token = new User().generateAtuhToken();
+                token = new User().generateAuthToken();
                 name = 'genre1'
             })
 
@@ -80,7 +91,7 @@ describe('/api/genres', () => {
 
                 const res = await exec();
 
-                except(res.status).toBe(401);
+                expect(res.status).toBe(401);
             })
 
             it('should return 400 if genre is less than 5 characters', async() => {
@@ -89,7 +100,7 @@ describe('/api/genres', () => {
 
                 const res = await exec();
 
-                except(res.status).toBe(400);
+                expect(res.status).toBe(400);
             })
 
 
@@ -100,7 +111,7 @@ describe('/api/genres', () => {
                 
                 const res = await exec();
  
-                 except(res.status).toBe(400);
+                expect(res.status).toBe(400);
              })
 
 
@@ -112,7 +123,7 @@ describe('/api/genres', () => {
 
                const genre = Genre.find({ name: 'genre1'});
 
-                except(genre).not.toBeNull(401);
+               expect(genre).not.toBeNull();
              })
 
              //make sure that this genres is in the body of the response 
@@ -120,8 +131,8 @@ describe('/api/genres', () => {
                 
                 const res = await exec();
               
-                except(res.body).toHaveProperty('_id');
-                except(res.body).toHaveProperty('name', 'genre1');
+                expect(res.body).toHaveProperty('_id');
+                expect(res.body).toHaveProperty('name', 'genre1');
              })
         })
 })
