@@ -86,5 +86,14 @@ describe('/api/returns', () => {
             const res = await exec();
             expect(res.status).toBe(400);
       })
+
+      it('should return 400 if return already in process', async ()=> {
+       
+        rental.dateReturned = new Date();
+        await rental.save();
+
+        const res = await exec();
+        expect(res.status).toBe(400);
+  })
 })
 
