@@ -62,5 +62,21 @@ describe('/api/returns', () => {
           expect(res.status).toBe(400);
       })
 
+      // not providing movieId
+
+      it('should return 400 if movie id is not provided', async ()=> {
+        // user log in and generated the token
+       const token = new User().generateAuthToken();
+
+        const res = await request(server)
+          .post('/api/returns')
+          .set('x-auth-token', token)
+          // not passing the customerId
+          .send({customerId})
+  
+          expect(res.status).toBe(400);
+      })
+
+
 })
 
