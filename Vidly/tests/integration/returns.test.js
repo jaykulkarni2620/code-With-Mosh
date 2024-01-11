@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const {Rental} = require('../../models/rental');
 const request = require('supertest');
+const { User } = require('../../models/user');
 
 
 
@@ -46,5 +47,20 @@ describe('/api/returns', () => {
 
         expect(res.status).toBe(401);
     })
+
+    // Customer id not provided
+    it('should return 400 if Cutomer id is not provided', async ()=> {
+        // user log in and generated the token
+       const token = new User().generateAuthToken();
+
+        const res = await request(server)
+          .post('/api/returns')
+          .set('x-auth-token', token)
+          // not passing the customerId
+          .send({movieId})
+  
+          expect(res.status).toBe(400);
+      })
+
 })
 
