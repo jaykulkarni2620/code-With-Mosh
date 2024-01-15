@@ -143,5 +143,20 @@ it('should incerese the movie stock if input is valid ', async ()=> {
     expect(movieInDb.numberInStock).toBe(movie.numberInStock + 1);
 })
 
+it('should return the rental if input is valid ', async ()=> {
+    const res = await exec();
+
+    const rentalInDb = Rental.findById(rental._id)
+    // expect(res.body).toHaveProperty('dateOut');
+    // expect(res.body).toHaveProperty('dateReturned');
+    // expect(res.body).toHaveProperty('rentalFee');
+    // expect(res.body).toHaveProperty('customer');
+    // expect(res.body).toHaveProperty('movie');
+    
+    //second approch
+    expect(Object.keys(res.body)).toEqual(
+        expect.arrayContaining(['dateOut','dateReturned','rentalFee','customer', 'movie']));
+
+    })
 })
 
