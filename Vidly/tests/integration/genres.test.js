@@ -13,9 +13,9 @@ describe('api/genres/', () => {
         server = await require('../../index');
     });
     // pratyek endpoint nantr aplyala server stop karava lagto
-    afterEach(() => {
+    afterEach(async() => {
         if (server) {
-            server.close();
+           await  server.close();
         }
     });
     
